@@ -1,0 +1,47 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"command": "build",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"args": ["--target=mipsel-unknown-linux-musl"],
+			"group": "build",
+			"label": "rust: cargo build"
+		},
+		{
+			"type": "shell",
+			"command": "sshpass",
+			"args": ["-p", "ViPOC2020", "scp", "target/mipsel-unknown-linux-musl/debug/${workspaceFolderBasename}", "root@192.168.3.1:/root/${workspaceFolderBasename}"],
+			"label": "scp: upload debug",
+			"group": "build"
+		},
+		{
+			"type": "shell",
+			"command": "sshpass",
+			"args": ["-p", "ViPOC2020", "ssh", "root@192.168.3.1", "./${workspaceFolderBasename}"],
+			"label": "ssh: run",
+			"group": "build",
+			"dependsOrder": "sequence",
+			"dependsOn": ["rust: cargo build", "scp: upload debug"]
+		},
+		{
+			"type": "shell",
+			"command": "sshpass",
+			"args": ["-p", "ViPOC2020", "ssh", "root@192.168.3.1"],
+			"label": "ssh: connect",
+			"runOptions": {"runOn": "folderOpen"},
+			"presentation": {
+				"echo": false,
+				"reveal": "always",
+				"focus": true,
+				"panel": "new",
+				"showReuseMessage": false,
+				"clear": false
+			},
+			"group": "none"	
+		},
+	]
+}
