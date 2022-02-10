@@ -16,7 +16,8 @@
 			"command": "sshpass",
 			"args": ["-p", "ViPOC2020", "scp", "target/mipsel-unknown-linux-musl/debug/${workspaceFolderBasename}", "root@192.168.3.1:/root/${workspaceFolderBasename}"],
 			"label": "scp: upload debug",
-			"group": "build"
+			"group": "build",
+			"dependsOn": ["rust: cargo build"]
 		},
 		{
 			"type": "shell",
